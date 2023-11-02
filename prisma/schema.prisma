@@ -19,10 +19,22 @@ model Pizza {
 }
 
 model Pedido {
-  id       Int    @id @default(autoincrement())
+  id            Int          @id @default(autoincrement())
+  nome          String
+  telefone      String
+  endereco      String
+  status        String
+  pizza         Pizza        @relation(fields: [idPizza], references: [id])
+  idPizza       Int
+  Cliente       Cliente?     @relation(fields: [clienteId], references: [id])
+  clienteId     Int?
+}
+
+model Cliente {
+  id       Int      @id @default(autoincrement())
   nome     String
   telefone String
-  endereco String
-  pizza    Pizza  @relation(fields: [idPizza], references: [id])
-  idPizza  Int
+  pedidos  Pedido[]
 }
+
+

@@ -9,7 +9,6 @@ const PORT = 5050;
 
 app.use(express.json())
 require("./routes/PizzaRoutes")(app)
-
 require("./routes/PedidoRoutes")(app)
 
 
