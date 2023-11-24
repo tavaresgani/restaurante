@@ -1,3 +1,5 @@
+import { PedidoValidationSchema } from "../validation/PedidoValidation"
+
 const {PrismaClient} = require("@prisma/client") 
 const prisma = new PrismaClient()
 
@@ -6,6 +8,7 @@ export const PedidoController = {
     async criarPedido(pedido: any) {
         try{
             console.log(pedido)
+            await PedidoValidationSchema.validate(pedido)
             const pedidoCriado = await prisma.pedido.create({
                 data: pedido
                 
@@ -32,11 +35,18 @@ export const PedidoController = {
         }
     },
 
-    async atualizarPedido(id: number, novosDados:any){
+    async atualizarPedido(id: number, pedido: any){
         try{
+            await PedidoValidationSchema.validate(pedido)
             const pedidoAtualizado = await prisma.pedido.update({
                 where: {id},
-                data: novosDados
+                data: {
+                    nome: pedido.nome,
+                    telefone: pedido.telefone,
+                    endereco: pedido.endereco,
+                    pizza: pedido.pizza
+
+                }
             });
             return pedidoAtualizado;
         } catch (error){

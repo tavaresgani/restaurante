@@ -1,3 +1,5 @@
+import { PizzaValidationSchema } from "../validation/PizzaValidation"
+
 const { PrismaClient } = require("@prisma/client")
 const prisma = new PrismaClient()
 
@@ -6,6 +8,7 @@ export const PizzaController = {
     async criar(pizza: any) {
         try {
             console.log(pizza)
+            await PizzaValidationSchema.validate(pizza)
             const pizzaCriada = await prisma.pizza.create({
                 data: pizza
             })
@@ -29,11 +32,16 @@ export const PizzaController = {
         }
     },
 
-    async atualizar(id: number, novosDados: any) {
+    async atualizar(id: number, pizza: any) {
         try {
+            await PizzaValidationSchema.validate(pizza)
             const pizzaAtualizada = await prisma.pizza.update({
                 where: { id},
-                data: novosDados,
+                data: {
+                    sabor: pizza.sabor,
+                    preco: pizza.preco,
+                    descricao: pizza.descricao
+                }
             });
             return pizzaAtualizada;
         } catch (error: any) {

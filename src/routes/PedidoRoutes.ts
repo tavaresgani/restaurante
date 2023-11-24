@@ -1,4 +1,5 @@
 import { PedidoController } from '../controllers/PedidoController'
+import { PedidoValidationSchema } from '../validation/PedidoValidation';
 
 module.exports = (app: any) => {
 
@@ -19,8 +20,7 @@ module.exports = (app: any) => {
     // Rota para atualizar um pedido
     app.put('/pedidos/:id', async (req: any, res: any) => {
         const pedidoId = parseInt(req.params.id);
-        const novosDados = req.body;
-        const pedidoAtualizado = await PedidoController.atualizarPedido(pedidoId, novosDados);
+        const pedidoAtualizado = await PedidoController.atualizarPedido(pedidoId, PedidoValidationSchema);
         return res.status(200).json(pedidoAtualizado);
     });
 

@@ -1,4 +1,5 @@
 import { PizzaController } from '../controllers/PizzaController'
+import { PizzaValidationSchema } from '../validation/PizzaValidation'
 
 module.exports = (app: any) => {
     // buscar todas as pizzas
@@ -17,8 +18,7 @@ module.exports = (app: any) => {
     // rota para atualizar uma pizza
     app.put('/pizzas/:id', async(req: any, res: any) => {
         const pizzaId = parseInt(req.params.id);
-        const novosDados = req.body;
-        const pizzaAtualizada = await PizzaController.atualizar(pizzaId, novosDados);
+        const pizzaAtualizada = await PizzaController.atualizar(pizzaId, PizzaValidationSchema);
         return res.status(200).json(pizzaAtualizada)
     })
 
